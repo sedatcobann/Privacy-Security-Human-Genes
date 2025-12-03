@@ -1,93 +1,109 @@
-# COMP430 Project  
-**Implemented by:** **Sedat Çoban (60545)**  
+# COMP430 Project
 
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![GUI](https://img.shields.io/badge/GUI-Swing-blue?style=for-the-badge)
-![Encryption](https://img.shields.io/badge/Encryption-AES-green?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge)
+**Author:** Sedat Çoban (60545)
 
-## 📑 Table of Contents
-- [Overview](#overview)  
-- [Project Flow](#project-flow)  
-- [Classes](#classes)  
-  - [loginPage](#1-loginpage-class)  
-  - [Authentication](#2-authentication-class)  
-  - [screen](#3-screen-class-screenjava)  
-  - [encryption](#4-encryption-class)  
-  - [applications](#5-applications-class)  
-- [How It Works](#how-it-works)  
-- [File Structure](#file-structure)  
-- [Future Improvements](#future-improvements)
+## Table of Contents
+- [Overview](#overview)
+- [System Architecture](#system-architecture)
+- [Class Descriptions](#class-descriptions)
+  - [loginPage](#loginpage)
+  - [Authentication](#authentication)
+  - [screen](#screen)
+  - [encryption](#encryption)
+  - [applications](#applications)
+- [Project Workflow](#project-workflow)
+- [File Structure](#file-structure)
+- [Future Work](#future-work)
 
-## 🔍 Overview
-This project implements a secure login system, file decryption workflow, and application operations using Java Swing for the UI and cryptographic functions for secure data handling.
+---
 
-The system performs:
-- User authentication with salted hashing  
-- Secure encryption/decryption of dataset files  
-- GUI pages for login and file access  
-- Application operations after successful authentication  
+## Overview
+This project implements a secure login system, encrypted file handling, and application-level operations using Java. The system includes GUI components built with Swing and cryptographic utilities for password verification and dataset encryption/decryption.
 
-## 🔁 Project Flow
-```
-Start → Login Page → Authentication → File Screen → Generate Key → Encrypt/Decrypt → Application Page
-```
+---
 
-## 🧩 Classes
+## System Architecture
+The system operates in three main stages:
 
-### 1. `loginPage` Class
-Displays the **login interface** with:
-- 2 Labels (Username, Password)
-- 2 TextFields for input
-- 2 Buttons (Login, Reset)
+1. **User Authentication**  
+   Validates credentials using salted hashing and stored verification data.
 
-### 2. `Authentication` Class
-Handles **user verification**.
+2. **File Access & Decryption**  
+   Prompts the user to enter a file name and password, generates a key, and decrypts/encrypts dataset rows.
 
-#### `readPasswords()`
-- Reads stored user info from a text file:
+3. **Application Operations**  
+   Provides additional functionality after the user successfully logs in and decrypts a dataset.
+
+---
+
+## Class Descriptions
+
+### loginPage
+A Swing-based login interface containing:
+- Two labels (Username, Password)
+- Two text fields for user input
+- Two buttons (Login, Reset)
+
+On submission, the class invokes `Authentication.hashingPassword()` to verify credentials. If authentication is successful, a new thread is started to proceed to the next stage.
+
+---
+
+### Authentication
+This class handles credential validation and encrypted password storage.
+
+#### readPasswords()
+- Reads a text file containing:
   - Username  
   - Salt  
-  - Hashed (password + salt)  
-- Saves results in a **HashMap**
-- Uses `User.java` to structure user records
+  - Hashed password (password + salt)
+- Stores these values in a `HashMap<String, User>`.
+- Uses `User.java` to model each record.
 
-#### `hashingPassword(username, password)`
-- Verifies if username exists  
-- Hashes provided password with stored salt  
-- Compares hashes  
-- Returns **true** if they match  
+#### hashingPassword(username, password)
+- Validates existence of the username.
+- Hashes the provided password using the stored salt.
+- Compares computed and stored hashes.
+- Returns `true` if they match.
 
-### 3. `screen` Class (`screen.java`)
-GUI for **file name + password** entry used for decryption.
+---
 
-Includes:
-- 2 Labels (File Name, Password)
-- 2 Input TextFields
-- 1 Button to proceed
+### screen (screen.java)
+Provides the user interface for entering:
+- File name  
+- Password  
 
-### 4. `encryption` Class
-Implements cryptographic functions.
+It includes two labels, two input fields, and one button to confirm input and proceed to cryptographic operations.
 
-#### `generateSecretKey()`
-Generates a key based on the private key entered in `screen.java`.
+---
 
-#### `encrypt()`
-Encrypts the dataset **row by row** using the generated key.
+### encryption
+Includes three cryptographic methods:
 
-#### `decrypt()`
-Decrypts the dataset **row by row** using the same key.
+#### generateSecretKey()
+Derives a secret key based on the user’s private key input provided in `screen.java`.
 
-### 5. `applications` Class
-Contains the operations available to the user after successful authentication and file processing.
+#### encrypt()
+Encrypts dataset content row-by-row with the generated key.
 
-## ⚙️ How It Works
-1. User logs in → hashed + salted verification  
-2. User enters file + key → system generates cryptographic key  
-3. User decrypts/encrypts target data  
-4. Application features become accessible  
+#### decrypt()
+Decrypts dataset content row-by-row using the same key.
 
-## 📁 File Structure
+---
+
+### applications
+Contains the application functionalities available after successful authentication and decryption. Methods within this class support operations the user can perform on the decrypted dataset.
+
+---
+
+## Project Workflow
+```
+User Login → Authentication → File Input Screen → Generate Key →
+Encrypt / Decrypt Data → Application Functions
+```
+
+---
+
+## File Structure
 ```
 project/
 │── loginPage.java
@@ -100,9 +116,11 @@ project/
 │── README.md
 ```
 
-## 🚀 Future Improvements
-- Add multi-user role support  
-- Convert Swing UI to JavaFX for modern design  
-- Store user credentials in a secure database  
-- Integrate stronger hashing (e.g., PBKDF2, bcrypt, scrypt)  
-- Add logs and error handling  
+---
+
+## Future Work
+- Improve GUI design using JavaFX
+- Replace text-based credential storage with a secure database
+- Integrate stronger password hashing algorithms (PBKDF2, bcrypt, scrypt)
+- Add error handling, logs, and audit trails
+- Support role-based system access
