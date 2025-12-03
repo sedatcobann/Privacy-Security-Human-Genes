@@ -1,29 +1,108 @@
-This project is implemented by Sedat Çoban (60545) - COMP430 - Project
+# COMP430 Project  
+**Implemented by:** **Sedat Çoban (60545)**  
 
-	In the main, there is a class called loginPage. This class is constructed in order to visualize
-	the login page for the user. There are 2 labels, 2 text fields and 2 buttons. Labels are for username 
-	and password. Text fields are for entering the username and the password. Buttons are for logining to
-	system and resetting the written texts in the text fields. When the user writes the username and the 
-	password, Authentication class' hashingPassword method will be called in order to checks whether the 
-	password and the username are correct. If they are correct, second thread will be started.
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![GUI](https://img.shields.io/badge/GUI-Swing-blue?style=for-the-badge)
+![Encryption](https://img.shields.io/badge/Encryption-AES-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge)
 
-	In the Authentication class, there are two methods. One is hashingPassword and readPasswords. readPassword 
-	reads a text file which contains the username, salt value and the hashed value of password+salt. It reads
-	all of the users' username, salt and hashed value of salt+password value and returns them inside a HashMap.
-	For this method, I constructed User.java class in order to records the username, salt and hashed values. 
-	Then, hashingPassword method, will take the username and password that user entered in the login page. 
-	It checks whether there is a user that has the same username and if there is one hashes the password with
-	saved salt value. Then, it checks whether the hashed passwords are same or not. If they are same, 
-	the method will return true. 
+## 📑 Table of Contents
+- [Overview](#overview)  
+- [Project Flow](#project-flow)  
+- [Classes](#classes)  
+  - [loginPage](#1-loginpage-class)  
+  - [Authentication](#2-authentication-class)  
+  - [screen](#3-screen-class-screenjava)  
+  - [encryption](#4-encryption-class)  
+  - [applications](#5-applications-class)  
+- [How It Works](#how-it-works)  
+- [File Structure](#file-structure)  
+- [Future Improvements](#future-improvements)
 
-	In the screen.java class, there is another class called screen. This class is constructed in order to
-	visualize the entering the file name and password for decryption. There are 2 labels, 2 text fields and 1
-	button. Labels are for file name and password. Text fields are for entering the file name and the password.
-	Button is for entering the file name and the password to the system. 
+## 🔍 Overview
+This project implements a secure login system, file decryption workflow, and application operations using Java Swing for the UI and cryptographic functions for secure data handling.
 
-	In encryption class, there are 3 methods which are generateSecretKey, encrypt and decrypt. generateSecretKey
-	method wil generate specific key for encrypt and decryption of the datasets according to the private key 
-	that user entered in screen.java. In encrypt method, the data will be encrypted row by row according to the
-	key. In decrypt method, the data will be decrypted row by row according to the key.
+The system performs:
+- User authentication with salted hashing  
+- Secure encryption/decryption of dataset files  
+- GUI pages for login and file access  
+- Application operations after successful authentication  
 
-	In applications class, there will be methods for applications for user to perform. 
+## 🔁 Project Flow
+```
+Start → Login Page → Authentication → File Screen → Generate Key → Encrypt/Decrypt → Application Page
+```
+
+## 🧩 Classes
+
+### 1. `loginPage` Class
+Displays the **login interface** with:
+- 2 Labels (Username, Password)
+- 2 TextFields for input
+- 2 Buttons (Login, Reset)
+
+### 2. `Authentication` Class
+Handles **user verification**.
+
+#### `readPasswords()`
+- Reads stored user info from a text file:
+  - Username  
+  - Salt  
+  - Hashed (password + salt)  
+- Saves results in a **HashMap**
+- Uses `User.java` to structure user records
+
+#### `hashingPassword(username, password)`
+- Verifies if username exists  
+- Hashes provided password with stored salt  
+- Compares hashes  
+- Returns **true** if they match  
+
+### 3. `screen` Class (`screen.java`)
+GUI for **file name + password** entry used for decryption.
+
+Includes:
+- 2 Labels (File Name, Password)
+- 2 Input TextFields
+- 1 Button to proceed
+
+### 4. `encryption` Class
+Implements cryptographic functions.
+
+#### `generateSecretKey()`
+Generates a key based on the private key entered in `screen.java`.
+
+#### `encrypt()`
+Encrypts the dataset **row by row** using the generated key.
+
+#### `decrypt()`
+Decrypts the dataset **row by row** using the same key.
+
+### 5. `applications` Class
+Contains the operations available to the user after successful authentication and file processing.
+
+## ⚙️ How It Works
+1. User logs in → hashed + salted verification  
+2. User enters file + key → system generates cryptographic key  
+3. User decrypts/encrypts target data  
+4. Application features become accessible  
+
+## 📁 File Structure
+```
+project/
+│── loginPage.java
+│── Authentication.java
+│── User.java
+│── screen.java
+│── encryption.java
+│── applications.java
+│── passwords.txt
+│── README.md
+```
+
+## 🚀 Future Improvements
+- Add multi-user role support  
+- Convert Swing UI to JavaFX for modern design  
+- Store user credentials in a secure database  
+- Integrate stronger hashing (e.g., PBKDF2, bcrypt, scrypt)  
+- Add logs and error handling  
