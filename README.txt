@@ -1,5 +1,4 @@
 # COMP430 Project
-
 **Author:** Sedat Çoban (60545)
 
 ## Table of Contents
@@ -15,96 +14,77 @@
 - [File Structure](#file-structure)
 - [Future Work](#future-work)
 
----
-
 ## Overview
-This project implements a secure login system, encrypted file handling, and application-level operations using Java. The system includes GUI components built with Swing and cryptographic utilities for password verification and dataset encryption/decryption.
-
----
+This project implements a secure login system, encrypted file access, and application-level operations using Java. It includes Swing-based GUI components and cryptographic utilities for password verification and dataset encryption/decryption.
 
 ## System Architecture
-The system operates in three main stages:
+The system consists of three main stages:
 
-1. **User Authentication**  
-   Validates credentials using salted hashing and stored verification data.
+### 1. User Authentication
+Validates user credentials using salted hashing.
 
-2. **File Access & Decryption**  
-   Prompts the user to enter a file name and password, generates a key, and decrypts/encrypts dataset rows.
+### 2. File Access & Decryption
+Requests a file name and password, generates a key, and processes dataset encryption or decryption row-by-row.
 
-3. **Application Operations**  
-   Provides additional functionality after the user successfully logs in and decrypts a dataset.
-
----
+### 3. Application Operations
+Provides functionality to interact with decrypted data.
 
 ## Class Descriptions
 
 ### loginPage
-A Swing-based login interface containing:
-- Two labels (Username, Password)
-- Two text fields for user input
-- Two buttons (Login, Reset)
+A Swing-based login UI.
 
-On submission, the class invokes `Authentication.hashingPassword()` to verify credentials. If authentication is successful, a new thread is started to proceed to the next stage.
+**Components:**
+- Username label and text field  
+- Password label and text field  
+- Login button  
+- Reset button  
 
----
+On submission, invokes `Authentication.hashingPassword()` and proceeds only when credentials are correct.
 
 ### Authentication
-This class handles credential validation and encrypted password storage.
+Handles password validation and secure storage.
 
 #### readPasswords()
-- Reads a text file containing:
-  - Username  
-  - Salt  
-  - Hashed password (password + salt)
-- Stores these values in a `HashMap<String, User>`.
-- Uses `User.java` to model each record.
+- Loads user data from a text file (username, salt, hashed password)
+- Stores records in `HashMap<String, User>`
 
 #### hashingPassword(username, password)
-- Validates existence of the username.
-- Hashes the provided password using the stored salt.
-- Compares computed and stored hashes.
-- Returns `true` if they match.
-
----
+- Verifies username exists  
+- Hashes the input password with stored salt  
+- Compares hashes  
+- Returns `true` on match  
 
 ### screen (screen.java)
-Provides the user interface for entering:
+Interface for entering:
 - File name  
 - Password  
 
-It includes two labels, two input fields, and one button to confirm input and proceed to cryptographic operations.
-
----
+Includes two input fields and one confirmation button.
 
 ### encryption
-Includes three cryptographic methods:
+Provides cryptographic operations:
 
 #### generateSecretKey()
-Derives a secret key based on the user’s private key input provided in `screen.java`.
+Generates a secret key based on the user-provided private key.
 
 #### encrypt()
-Encrypts dataset content row-by-row with the generated key.
+Encrypts dataset rows.
 
 #### decrypt()
-Decrypts dataset content row-by-row using the same key.
-
----
+Decrypts dataset rows.
 
 ### applications
-Contains the application functionalities available after successful authentication and decryption. Methods within this class support operations the user can perform on the decrypted dataset.
-
----
+Contains the operations available after authentication and decryption.
 
 ## Project Workflow
-```
+```text
 User Login → Authentication → File Input Screen → Generate Key →
 Encrypt / Decrypt Data → Application Functions
 ```
 
----
-
 ## File Structure
-```
+```text
 project/
 │── loginPage.java
 │── Authentication.java
@@ -116,11 +96,9 @@ project/
 │── README.md
 ```
 
----
-
 ## Future Work
-- Improve GUI design using JavaFX
-- Replace text-based credential storage with a secure database
-- Integrate stronger password hashing algorithms (PBKDF2, bcrypt, scrypt)
-- Add error handling, logs, and audit trails
-- Support role-based system access
+- Replace Swing UI with JavaFX  
+- Use secure DB instead of text file  
+- Adopt PBKDF2 / bcrypt / scrypt for hashing  
+- Add error handling and logs  
+- Implement role-based authentication  
